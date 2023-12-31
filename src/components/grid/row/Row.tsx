@@ -1,7 +1,7 @@
 "use client"
 import { useEffect } from "react"
 import styles from "./row.module.css"
-import { rows, activeRowIndexAtom } from "@/state"
+import { activeRowIndexAtom, maxRowLength } from "@/state"
 import { useAtom, PrimitiveAtom } from "jotai"
 
 function Row({ rowIndex, rowAtom }: { rowIndex: number, rowAtom: PrimitiveAtom<string[]> }) {
@@ -36,11 +36,9 @@ function Row({ rowIndex, rowAtom }: { rowIndex: number, rowAtom: PrimitiveAtom<s
 
     return (
         <div className={styles.row}>
-            <div className={styles.square}>{row[0] ? row[0] : null}</div>
-            <div className={styles.square}>{row[1] ? row[1] : null}</div>
-            <div className={styles.square}>{row[2] ? row[2] : null}</div>
-            <div className={styles.square}>{row[3] ? row[3] : null}</div>
-            <div className={styles.square}>{row[4] ? row[4] : null}</div>
+            {Array.from(Array(maxRowLength).keys()).map(index => {
+                return <div key={index} className={styles.square}>{row[index] ? row[index] : null}</div>
+            })}
         </div>
     )
 }

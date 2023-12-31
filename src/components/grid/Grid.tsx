@@ -39,15 +39,9 @@ function Grid() {
 
     return (
         <>
-        {rows.map((rowAtom, index) => {
-            return <Row rowAtom={rowAtom} rowIndex={index} key={index} />
-
-        })}
-            {/* <Row rowIndex={1} />
-            <Row rowIndex={2} />
-            <Row rowIndex={3} />
-            <Row rowIndex={4} />
-            <Row rowIndex={5} /> */}
+            {rows.map((rowAtom, index) => {
+                return <Row rowAtom={rowAtom} rowIndex={index} key={index} />
+            })}
         </>
     )
 }
