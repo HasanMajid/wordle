@@ -10,22 +10,46 @@ function hashCode(str: string) {
     }
     return hash;
 }
+interface IDictionary<TValue> {
+    [id: string]: TValue;
+}
+
+function getFrequency(str: string | undefined) {
+    if (str === undefined) { return {} }
+    const freq: IDictionary<number> = {};
+    for (let i = 0; i < 5; i++) {
+        if (freq[str[i]]) {
+            freq[str[i]]++;
+        } else {
+            freq[str[i]] = 1;
+        }
+    }
+    return freq;
+}
 
 export async function GET(request: Request, context: any) {
     const { params } = context;
     const wordGuessed = params.wordGuessed;
+    // TODO: check if wordGuessed is 5 letters long
     console.log(wordGuessed);
     const date = new Date();
     const UTCDate = date.getUTCMonth().toString() + date.getUTCDay().toString() + date.getUTCFullYear().toString();
     const wordIndex = hashCode(UTCDate) % 12484;
-    const word = words.at(wordIndex);
-    const correctness = []
+    const word = words.at(wordIndex)?.toUpperCase();
+    const freq = getFrequency(word);
+    const correctness = [];
     if (wordGuessed) {
         for (let i = 0; i < 5; i++) {
-            if (word != undefined && word[i] === wordGuessed[i]) {
-                correctness.push("green")
-            } else {
-                correctness.push("gray")
+            if (word != undefined) {
+                if (word[i] === wordGuessed[i]) {
+                    correctness.push("green")
+                    freq[word[i]]--;
+                    // TODO: fix backend logic
+                } else if (word.includes(wordGuessed[i])) {
+                    correctness.push("yellow");
+                } else {
+                    correctness.push("gray")
+                }
             }
         }
     }
