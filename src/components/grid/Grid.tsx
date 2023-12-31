@@ -2,7 +2,7 @@
 import { useEffect } from 'react'
 import Row from './row/Row'
 import { useAtom } from 'jotai'
-import { rows } from '@/state'
+import { maxRowLength, rows } from '@/state'
 import { activeRowIndexAtom, getActiveRowAtom } from '@/state'
 import { checkWord } from '@/utils/helpers'
 
@@ -20,7 +20,7 @@ function Grid() {
             }
         }
 
-        if (row.length === 5) {
+        if (row.length === maxRowLength) {
             // TODO: check if word is right
             let word = ""
             row.map(letter => {
