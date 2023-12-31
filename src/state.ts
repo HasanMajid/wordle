@@ -48,7 +48,7 @@ export const useRowAtom = (rowAtom: PrimitiveAtom<string[]>, rowIndex: number) =
                 if (isLetter && row.length < maxRowLength) {
                     setRow((prev: string[]) => {
                         const newPrev = [...prev];
-                        newPrev.push(e.key);
+                        newPrev.push(e.key.toUpperCase());
                         return newPrev;
                     });
                 }
