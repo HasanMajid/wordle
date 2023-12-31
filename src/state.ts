@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { atom, useAtom } from "jotai";
 import { Atom, PrimitiveAtom } from "jotai/vanilla";
 
-export const themeAtom = atom("dark");
+export const themeAtom = atom<"dark" | "light">("dark");
 
 export const activeRowIndexAtom = atom(0);
 export const maxRowLength = 5;
