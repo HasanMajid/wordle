@@ -2,14 +2,14 @@
     border-left: 2px solid ;
     border-top: 2px solid ;
     border-bottom: 2px solid ;
-    color: beige;
     display: flex;
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
     justify-content: center;
     align-items: center;
     margin-bottom: 0.5rem;
-    font-size: 3rem;
+    font-size: 2rem;
+    font-weight: 700;
     background-color: rgb(31, 131, 6);
 }
 
