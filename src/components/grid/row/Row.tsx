@@ -2,10 +2,10 @@
 import { useEffect } from "react"
 import styles from "./row.module.css"
 import { rows, activeRowIndexAtom } from "@/state"
-import { useAtom } from "jotai"
+import { useAtom, PrimitiveAtom } from "jotai"
 
-function Row({ rowIndex }: { rowIndex: number }) {
-    const rowAtom = rows[rowIndex];
+function Row({ rowIndex, rowAtom }: { rowIndex: number, rowAtom: PrimitiveAtom<string[]> }) {
+    // const rowAtom = rows[rowIndex];
     const [row, setRow] = useAtom(rowAtom);
     const [activeRowIndex, setActiveRowIndex] = useAtom(activeRowIndexAtom);
 
@@ -14,20 +14,20 @@ function Row({ rowIndex }: { rowIndex: number }) {
             const regex = new RegExp("[a-zA-Z]");
             const isLetter = regex.test(e.key) && e.key.length === 1;
             if (isLetter && row.length < 5) {
-                setRow((prev) => {
+                setRow((prev: string[]) => {
                     const newPrev = [...prev];
                     newPrev.push(e.key);
-                    return newPrev
+                    return newPrev;
                 });
             }
         }
 
         if (activeRowIndex === rowIndex) {
-            if (row.length === 5 && rowIndex !== 5) {
-                setActiveRowIndex(prev => prev + 1);
-            } else {
+            // if (row.length === 5 && rowIndex !== 5) {
+            //     setActiveRowIndex(prev => prev + 1);
+            // } else {
                 document.addEventListener("keypress", handleKeyDown);
-            }
+            // }
         }
         return () => {
             document.removeEventListener("keypress", handleKeyDown);
