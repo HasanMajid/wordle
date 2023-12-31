@@ -4,6 +4,7 @@ import { Atom } from "jotai/vanilla";
 export const themeAtom = atom("dark");
 
 export const activeRowIndexAtom = atom(0);
+export const maxRowLength = 5;
 
 export const rows = [
     atom<string[]>([]),
