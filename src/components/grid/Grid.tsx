@@ -22,7 +22,7 @@ function Grid() {
         const setRow = setRowList[activeRowIndex];
         const handleKeyDown = (e: KeyboardEvent) => {
             const regex = new RegExp("[a-zA-Z]");
-            const isLetter = regex.test(e.key);
+            const isLetter = regex.test(e.key) && e.key.length === 1;
             if (isLetter) {
                 // console.log();
                 setRow((prev) => {
