@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { atom, useAtom } from "jotai";
 import { Atom, PrimitiveAtom } from "jotai/vanilla";
+import { checkWord } from "./utils/helpers";
 
 export const themeAtom = atom<"dark" | "light">("dark");
 
@@ -84,18 +85,12 @@ export const useGridAtom = () => {
 
             if (e.key === "Enter") {
                 setIsChecking(true);
-                await fetch("/api/check/" + word)
-                    .then(response => {
-                        response.json().then(data => {
-                            setRowColours(data.correctness);
-                        }).catch(err => {
-                            console.log('error fetching');
-                        })
-                    }).catch(err => {
-                        console.log('error');
-                    })
-                if (activeRowIndex !== 5 && row.length === maxRowLength) {
-                    setActiveRowIndex(prev => prev + 1)
+                const correctness = await checkWord(word);
+                if (correctness !== null) {
+                    setRowColours(correctness);
+                    if (activeRowIndex !== 5 && row.length === maxRowLength) {
+                        setActiveRowIndex(prev => prev + 1)
+                    }
                 }
                 setIsChecking(false)
                 console.log('clicked Enter');
@@ -112,5 +107,5 @@ export const useGridAtom = () => {
         }
     }, [activeRowIndex, isChecking, row, setActiveRowIndex, setIsChecking, setRowColours])
 
-    return {isChecking}
+    return { isChecking }
 }
