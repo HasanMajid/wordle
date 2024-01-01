@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { atom, useAtom } from "jotai";
 import { Atom, PrimitiveAtom } from "jotai/vanilla";
 
@@ -30,7 +30,10 @@ export const getActiveRowAtom = atom<Atom<string[]>>((get) => {
     return rows[rowIndex];
 });
 
+export const isCheckingAtom = atom<boolean>(false);
+
 export const useRowAtom = (rowAtom: PrimitiveAtom<string[]>, rowIndex: number) => {
+    const [isChecking, setIsChecking] = useAtom(isCheckingAtom);
     const [activeRowIndex, setActiveRowIndex] = useAtom(activeRowIndexAtom)
     const [row, setRow] = useAtom(rowAtom);
 
@@ -55,11 +58,59 @@ export const useRowAtom = (rowAtom: PrimitiveAtom<string[]>, rowIndex: number) =
             }
         }
 
-        if (activeRowIndex === rowIndex) {
+        if (activeRowIndex === rowIndex && isChecking === false) {
             document.addEventListener("keydown", handleKeyDown);
         }
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
         }
-    }, [activeRowIndex, row.length, rowIndex, setRow])
+    }, [activeRowIndex, isChecking, row.length, rowIndex, setRow])
+}
+
+export const useGridAtom = () => {
+    const [isChecking, setIsChecking] = useAtom(isCheckingAtom);
+    const [activeRowIndex, setActiveRowIndex] = useAtom(activeRowIndexAtom);
+    const [activeRowAtom] = useAtom(getActiveRowAtom);
+    const [row, setRow] = useAtom(activeRowAtom);
+    const rowColoursAtom = rowColoursAtoms[activeRowIndex];
+    const [rowColours, setRowColours] = useAtom(rowColoursAtom);
+
+    useEffect(() => {
+        const handleEnterDown = async (e: KeyboardEvent) => {
+            let word = ""
+            row.map(letter => {
+                word += letter;
+            })
+
+            if (e.key === "Enter") {
+                setIsChecking(true);
+                await fetch("/api/check/" + word)
+                    .then(response => {
+                        response.json().then(data => {
+                            setRowColours(data.correctness);
+                        }).catch(err => {
+                            console.log('error fetching');
+                        })
+                    }).catch(err => {
+                        console.log('error');
+                    })
+                if (activeRowIndex !== 5 && row.length === maxRowLength) {
+                    setActiveRowIndex(prev => prev + 1)
+                }
+                setIsChecking(false)
+                console.log('clicked Enter');
+            }
+        }
+
+        if (row.length === maxRowLength && isChecking === false) {
+            // TODO: check if word is right and display win state
+            document.addEventListener("keydown", handleEnterDown);
+        }
+
+        return () => {
+            document.removeEventListener("keydown", handleEnterDown);
+        }
+    }, [activeRowIndex, isChecking, row, setActiveRowIndex, setIsChecking, setRowColours])
+
+    return {isChecking}
 }

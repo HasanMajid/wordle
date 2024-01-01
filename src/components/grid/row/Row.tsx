@@ -1,7 +1,6 @@
 "use client"
-import { useEffect } from "react"
 import styles from "./row.module.css"
-import { activeRowIndexAtom, maxRowLength, useRowAtom } from "@/state"
+import { maxRowLength, useRowAtom } from "@/state"
 import { useAtom, PrimitiveAtom } from "jotai"
 
 function Row({ rowIndex, rowAtom, rowColoursAtom }: { rowIndex: number, rowAtom: PrimitiveAtom<string[]>, rowColoursAtom: PrimitiveAtom<string[]> }) {
