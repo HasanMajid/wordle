@@ -3,7 +3,7 @@ import styles from "./row.module.css";
 import { maxRowLength, useRowAtom } from "@/state";
 import { useAtom, PrimitiveAtom } from "jotai";
 import { activeRowIndexAtom } from "@/state";
-import { CSSProperties, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 function Row({
     rowIndex,
