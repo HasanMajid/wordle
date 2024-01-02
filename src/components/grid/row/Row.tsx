@@ -2,7 +2,7 @@
 import styles from "./row.module.css";
 import { maxRowLength, useRowAtom } from "@/state";
 import { useAtom, PrimitiveAtom } from "jotai";
-import { activeRowIndexAtom } from "@/state";
+import { activeRowIndexAtom, themeAtom } from "@/state";
 import { useEffect, useState } from "react";
 
 function Row({
@@ -18,7 +18,8 @@ function Row({
     const [rowColour, setRowColour] = useAtom(rowColoursAtom);
     const [activeBox, setActiveBox] = useState(0);
     const [activeRowIndex] = useAtom(activeRowIndexAtom);
-    const activeSquareColour = "whitesmoke";
+    const [theme] = useAtom(themeAtom);
+    const activeSquareColour = theme === "dark" ? "whitesmoke" : "gray";
     useRowAtom(rowAtom, rowIndex);
 
     useEffect(() => {
