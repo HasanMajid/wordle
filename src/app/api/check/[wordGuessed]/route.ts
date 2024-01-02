@@ -37,18 +37,22 @@ export async function GET(request: Request, context: any) {
     const wordIndex = hashCode(UTCDate) % 12484;
     const word = words.at(wordIndex)?.toUpperCase();
     const freq = getFrequency(word);
-    const correctness = [];
-    if (wordGuessed) {
+    const correctness = ["gray", "gray", "gray", "gray", "gray"];
+    const needToCheck = []
+    if (wordGuessed && word != undefined) {
         for (let i = 0; i < 5; i++) {
-            if (word != undefined) {
-                if (word[i] === wordGuessed[i]) {
-                    correctness.push("green")
-                    freq[word[i]]--;
-                    // TODO: fix backend logic
-                } else if (word.includes(wordGuessed[i])) {
-                    correctness.push("yellow");
-                } else {
-                    correctness.push("gray")
+            if (word[i] === wordGuessed[i]) {
+                correctness[i] = "green"
+                freq[word[i]]--;
+            } else if (word.includes(wordGuessed[i])) {
+                needToCheck.push(i)
+            } 
+        }
+        for (let i of needToCheck) {
+            if (freq[wordGuessed[i]]) {
+                if (freq[wordGuessed] !== 0) {
+                    correctness[i] = "yellow";
+                    freq[wordGuessed[i]]--
                 }
             }
         }
