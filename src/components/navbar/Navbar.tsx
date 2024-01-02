@@ -1,19 +1,10 @@
 import { useAtom } from "jotai"
-import { themeAtom } from "@/state"
-import { MouseEvent, useEffect } from "react";
+import { themeAtom, useTheme } from "@/state"
 
 function Navbar() {
     const [theme, setTheme] = useAtom(themeAtom);
 
-    useEffect(() => {
-        const localTheme = localStorage.getItem("theme");
-        if (localTheme === "dark" || localTheme === "light") {
-            setTheme(localTheme);
-        } else {
-            localStorage.setItem("theme", "dark");
-            setTheme("dark");
-        }
-    }, [setTheme]);
+    useTheme();
 
     const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.currentTarget.blur()
