@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { atom, useAtom } from "jotai";
 import { Atom, PrimitiveAtom } from "jotai/vanilla";
 import { checkWord } from "./utils/helpers";
@@ -126,4 +126,32 @@ export const useTheme = () => {
             setTheme("dark");
         }
     }, [setTheme]);
+}
+
+export const useTime = () => {
+    const [loadingTime, setLoadingTime] = useState(true);
+    const [hours, setHours] = useState(24);
+    const [minutes, setMinutes] = useState(0);
+
+    useEffect(() => {
+        const counter = setInterval(() => {
+            setLoadingTime(true);
+            const date = new Date()
+            const currentHour = date.getUTCHours();
+            const currentMinute = date.getUTCMinutes();
+            setMinutes(60 - currentMinute);
+            setHours(() => 24 - currentHour);
+            if (currentMinute !== 0) {
+                setHours(prev => prev - 1)
+            }
+            console.log(currentHour);
+            setLoadingTime(false);
+        }, 1000)
+
+        return () => {
+            clearInterval(counter);
+        }
+    }, [])
+
+    return {hours, minutes, loadingTime}
 }
