@@ -59,5 +59,5 @@ export async function GET(request: Request, context: any) {
     }
     console.log(UTCDate);
     console.log(word);
-    return NextResponse.json({ word: word, correctness: correctness });
+    return NextResponse.json({ correctness: correctness });
 }
